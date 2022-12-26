@@ -26,9 +26,28 @@ def sign(message,private_key):
   )
    return signature
 
+def verify(signature,message,public_key):
 
+ try:
+  message=bytes(message,'utf-8')
+  public_key.verify(
+    signature,
+    message,
+    padding.PSS(
+        mgf=padding.MGF1(hashes.SHA256()),
+        salt_length=padding.PSS.MAX_LENGTH
+    ),
+    hashes.SHA256()
+  )
+  print("The message is Verified ")
+ except:
+   print("The message does no match")
+    
 if __name__=="__main__":
    pr,pu=gneratekeys()
-   print(pr,pu)
-
-   messag
+   # print(pr,pu)
+   message="Think of this message as a transaction message"
+   incorrectMessage = "this is not the correct meesage"
+   signature =sign(message,pr)
+   verify(signature,message,pu)
+   
